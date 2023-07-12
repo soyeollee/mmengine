@@ -673,8 +673,12 @@ class Runner:
             soft_limit = min(
                 max(env_cfg.get('resource_limit', 4096), base_soft_limit),
                 hard_limit)
-            resource.setrlimit(resource.RLIMIT_NOFILE,
-                               (soft_limit, hard_limit))
+            try:
+                resource.setrlimit(resource.RLIMIT_NOFILE,
+                                   (soft_limit, hard_limit))
+            except:
+                resource.setrlimit(resource.RLIMIT_NOFILE,
+                                   (1024*128, 1024*128))
 
     def set_randomness(self,
                        seed,
